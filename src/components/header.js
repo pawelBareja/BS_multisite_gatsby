@@ -1,13 +1,32 @@
-import { Link } from "gatsby"
-import PropTypes from "prop-types"
-import React from "react"
+import { Link } from 'gatsby'
+import PropTypes from 'prop-types'
+import React, { useState, useEffect } from 'react'
+import '../assets/style/header.css'
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
+const Header = ({ siteTitle }) => {
+
+  const [heading, setHeading] = useState(true)
+
+  useEffect(e => {
+    let distanceFromTop = window.pageYOffset
+
+    window.addEventListener('scroll', () => {
+      let newDistanceFromTop = window.pageYOffset
+      let difference = distanceFromTop - newDistanceFromTop
+
+      if (newDistanceFromTop < 50 || distanceFromTop >= newDistanceFromTop) {
+        setHeading(true)
+      } else {
+        setHeading(false)
+      }
+
+      difference = distanceFromTop - newDistanceFromTop
+      distanceFromTop = newDistanceFromTop
+    })
+  })
+
+  return (<header
+    className={heading ? 'header' : 'header hide'}
   >
     <div
       style={{
@@ -18,7 +37,7 @@ const Header = ({ siteTitle }) => (
     >
       <h1 style={{ margin: 0 }}>
         <Link
-          to="/"
+          to='/'
           style={{
             color: `white`,
             textDecoration: `none`,
@@ -29,7 +48,8 @@ const Header = ({ siteTitle }) => (
       </h1>
     </div>
   </header>
-)
+  )
+}
 
 Header.propTypes = {
   siteTitle: PropTypes.string,
